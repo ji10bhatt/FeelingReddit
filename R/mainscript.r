@@ -28,39 +28,41 @@ makePosWordCloud <- function(corpus) {
 
   corpus <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Positiv"))
   
-  # 1. Create a Document Term Matrix.
   (dtm <- DocumentTermMatrix(corpus))
   
-  # 2. Find the most frequent term in a single document.
   max(as.matrix(dtm))
   
   freq.terms <- sort(colSums(as.matrix(dtm)))
   tail(freq.terms)[1]
   
-  # 3. Find the most frequent term across the entire corpus.
   print(tail(freq.terms,1))
   
-  # Create a Term Frequency-Inverse Document Frequency matrix. Do the data make sense?
+  tfidf <- DocumentTermMatrix(corpus, control = list(weighting = weightTfIdf))
+  tfidf <- as.matrix(tfidf)
+  tfidf[1:10, 1:20]
+
+  wordcloud(names(freq.terms), freq.terms, min.freq = 5, colors = brewer.pal(8, "Dark2"))
+}
+
+makeNegWordCloud <- function(corpus) {
+
+  corpus <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Negative"))
+  
+  (dtm <- DocumentTermMatrix(corpus))
+  
+  max(as.matrix(dtm))
+  
+  freq.terms <- sort(colSums(as.matrix(dtm)))
+  tail(freq.terms)[1]
+  
+  print(tail(freq.terms,1))
+  
   tfidf <- DocumentTermMatrix(corpus, control = list(weighting = weightTfIdf))
   tfidf <- as.matrix(tfidf)
   tfidf[1:10, 1:20]
   # tfidf[, "absolut"]
   
-  cosineDistance <- function(X) {
-    1 - X %*% t(X) / (sqrt(rowSums(X^2) %*% t(rowSums(X^2))))
-  }
-  round(cosineDistance(tfidf[1:20,]), 3)
-  
-  # Make a word cloud.
-  # install.packages("wordcloud")
-  
-  wordcloud(names(freq.terms), freq.terms, min.freq = 5, colors = brewer.pal(8, "Dark2"))
-  
-}
-
-makeNegWordCloud <- function(comsite) {
-  corpus <- prepCorpus(comsite)
-  
+  wordcloud(names(freq.terms), freq.terms, min.freq = 5, colors = brewer.pal(8, "Dark2"))  
 }
 
 analyze <- function(corpus) {
