@@ -8,10 +8,10 @@ analyze <- function(x) {
 
   test <- reddit_content(x)
   comments <- test$comment
-  head(comments)
+
   corpus <- Corpus(VectorSource(comments))
 
-  as.character(corpus[[8]]) #original with no transformations
+
 
   corpus <- tm_map(corpus, content_transformer(tolower), lazy=T) #lower case conversion
   as.character(corpus[[8]]) #checked -- works
@@ -34,9 +34,7 @@ analyze <- function(x) {
   dtm <- DocumentTermMatrix(corpus) #assign to a dtm variable
   as.matrix(dtm)
 
-  class(corpus)
-  class(corpus[1])
-  class(corpus[[1]])
+
 
   positive <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Positiv"))
   negative <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Negativ"))
