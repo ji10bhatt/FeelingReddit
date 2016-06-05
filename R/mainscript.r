@@ -5,8 +5,15 @@ library(rplos)
 library(SnowballC)
 library(RedditExtractoR)
 
+<<<<<<< HEAD
 prepCorpus <- function(URL) {
    content <- reddit_content(URL)
+=======
+
+
+prepCorpus <- function(comsite) {
+   content <- reddit_content(comsite)
+>>>>>>> 567205306e4ccbb7a265a0f7834c649f572df249
    comments <- content$comment
    corpus <- Corpus(VectorSource(comments))
 
@@ -18,11 +25,59 @@ prepCorpus <- function(URL) {
    corpus <- tm_map(corpus, stemDocument, lazy=T)
 }
 
+<<<<<<< HEAD
+makePosWordCloud <- function(corpus) {
+
+  corpus <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Positiv"))
+  
+  (dtm <- DocumentTermMatrix(corpus))
+  
+  max(as.matrix(dtm))
+  
+  freq.terms <- sort(colSums(as.matrix(dtm)))
+  tail(freq.terms)[1]
+  
+  print(tail(freq.terms,1))
+  
+  tfidf <- DocumentTermMatrix(corpus, control = list(weighting = weightTfIdf))
+  tfidf <- as.matrix(tfidf)
+  tfidf[1:10, 1:20]
+
+  wordcloud(names(freq.terms), freq.terms, min.freq = 5, colors = brewer.pal(8, "Dark2"))
+}
+
+makeNegWordCloud <- function(corpus) {
+
+  corpus <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Negative"))
+  
+  (dtm <- DocumentTermMatrix(corpus))
+  
+  max(as.matrix(dtm))
+  
+  freq.terms <- sort(colSums(as.matrix(dtm)))
+  tail(freq.terms)[1]
+  
+  print(tail(freq.terms,1))
+  
+  tfidf <- DocumentTermMatrix(corpus, control = list(weighting = weightTfIdf))
+  tfidf <- as.matrix(tfidf)
+  tfidf[1:10, 1:20]
+  # tfidf[, "absolut"]
+  
+  wordcloud(names(freq.terms), freq.terms, min.freq = 5, colors = brewer.pal(8, "Dark2"))  
+}
+=======
+>>>>>>> f47bad8dbc98c382f723d37ea466b91cbfac2fa1
+
 analyze <- function(corpus) {
+
+
+
 
   #class(corpus)
   #class(corpus[1])
   #class(corpus[[1]])
+
 
   positive <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Positiv"))
   negative <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Negativ"))
@@ -34,6 +89,5 @@ analyze <- function(corpus) {
 }
 
 #load sample scripts
-analyze("https://www.reddit.com/r/worstof/comments/tk3cn/redditor_is_a_complete_asshole_and_demands_an/")
-analyze("https://www.reddit.com/r/UpliftingNews/comments/4mjty0/norway_becomes_first_country_in_the_world_to/")
+#analyze(prepCorpus("https://www.reddit.com/r/Documentaries/comments/4mikfl/weed_is_not_more_dangerous_than_alcohol_2014_342/"))
 
