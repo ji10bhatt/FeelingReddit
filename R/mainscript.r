@@ -4,26 +4,23 @@ library(tm.lexicon.GeneralInquirer)
 library(rplos)
 library(SnowballC)
 library(RedditExtractoR)
-library(wordcloud)
-library(RColorBrewer)
 
-loadComments <- function(comsite) {
-  content <- reddit_content(comsite) # grab reddit content
-  comments <- content$comment # put contents into 'comments'
-}
+
 
 prepCorpus <- function(comsite) {
-   comments <- loadComments(comsite) # grab and put comments into 'comments'
-   corpus <- Corpus(VectorSource(comments)) # convert to corpus
-   
-   corpus <- tm_map(corpus, content_transformer(tolower), lazy=T) 
+   content <- reddit_content(comsite)
+   comments <- content$comment
+   corpus <- Corpus(VectorSource(comments))
+
+   corpus <- tm_map(corpus, content_transformer(tolower), lazy=T) #lower case conversion
    corpus <- tm_map(corpus, removePunctuation, lazy=T)
-   corpus <- tm_map(corpus, removeNumbers, lazy=T) 
-   corpus <- tm_map(corpus, removeWords, stopwords("english"), lazy=T) 
-   corpus <- tm_map(corpus, stripWhitespace, lazy=T) 
+   corpus <- tm_map(corpus, removeNumbers, lazy=T) #remove numbers
+   corpus <- tm_map(corpus, removeWords, stopwords("english"), lazy=T) #remove stop words
+   corpus <- tm_map(corpus, stripWhitespace, lazy=T) #strip whitespace
    corpus <- tm_map(corpus, stemDocument, lazy=T)
 }
 
+<<<<<<< HEAD
 makePosWordCloud <- function(corpus) {
 
   corpus <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Positiv"))
@@ -64,28 +61,28 @@ makeNegWordCloud <- function(corpus) {
   
   wordcloud(names(freq.terms), freq.terms, min.freq = 5, colors = brewer.pal(8, "Dark2"))  
 }
+=======
+>>>>>>> f47bad8dbc98c382f723d37ea466b91cbfac2fa1
 
 analyze <- function(corpus) {
 
+
+
+
+  #class(corpus)
+  #class(corpus[1])
+  #class(corpus[[1]])
+
+
   positive <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Positiv"))
   negative <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Negativ"))
+
   margin <- positive - negative # negative score means more negative than positive
 
   print(mean(margin))
   print(sum(margin))
 }
 
-happyDay <- function(comsite) {
-  comments <- loadComments(comsite) # grab and put comments into 'comments'
-  comments
-}
-
-
-
 #load sample scripts
-corp1 <- prepCorpus("https://www.reddit.com/r/worstof/comments/tk3cn/redditor_is_a_complete_asshole_and_demands_an/")
+#analyze(prepCorpus("https://www.reddit.com/r/Documentaries/comments/4mikfl/weed_is_not_more_dangerous_than_alcohol_2014_342/"))
 
-analyze(corp1)
-analyze(prepCorpus("https://www.reddit.com/r/UpliftingNews/comments/4mjty0/norway_becomes_first_country_in_the_world_to/"))
-
-makePosWordCloud(corp1)

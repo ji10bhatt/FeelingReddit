@@ -2,6 +2,7 @@
 
 library(tm)
 library(tm.lexicon.GeneralInquirer)
+library(rplos)
 library(SnowballC)
 library(RedditExtractoR)
 
