@@ -5,8 +5,6 @@ library(rplos)
 library(SnowballC)
 library(RedditExtractoR)
 
-
-
 prepCorpus <- function(comsite) {
    content <- reddit_content(comsite)
    comments <- content$comment
@@ -19,18 +17,11 @@ prepCorpus <- function(comsite) {
    corpus <- tm_map(corpus, stripWhitespace, lazy=T) #strip whitespace
    corpus <- tm_map(corpus, stemDocument, lazy=T)
 }
-
-
 analyze <- function(corpus) {
-
-
-
 
   #class(corpus)
   #class(corpus[1])
   #class(corpus[[1]])
-
-
   positive <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Positiv"))
   negative <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("Negativ"))
 
@@ -41,6 +32,4 @@ analyze <- function(corpus) {
 }
 
 #load sample scripts
-analyze("https://www.reddit.com/r/worstof/comments/tk3cn/redditor_is_a_complete_asshole_and_demands_an/")
-analyze("https://www.reddit.com/r/UpliftingNews/comments/4mjty0/norway_becomes_first_country_in_the_world_to/")
-
+#analyze(prepCorpus("https://www.reddit.com/r/Documentaries/comments/4mikfl/weed_is_not_more_dangerous_than_alcohol_2014_342/"))
