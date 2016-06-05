@@ -1,3 +1,5 @@
+#install.packages("tm.lexicon.GeneralInquirer", repos="http://datacube.wu.ac.at", type="source")
+
 library(tm)
 library(tm.lexicon.GeneralInquirer)
 library(rplos)
@@ -5,7 +7,7 @@ library(SnowballC)
 library(RedditExtractoR)
 
 # load a sample thread
-test <- reddit_content("https://www.reddit.com/r/science/comments/4mkzrl/childrens_intelligence_mindsets_ie_their_beliefs/")
+test <- reddit_content("https://www.reddit.com/r/worstof/comments/tk3cn/redditor_is_a_complete_asshole_and_demands_an/")
 comments <- test$comment
 head(comments)
 corpus <- Corpus(VectorSource(comments))
@@ -42,3 +44,4 @@ negative <- sapply(corpus, tm_term_score, terms_in_General_Inquirer_categories("
 
 margin <- positive - negative # negative score means more negative than positive
 mean(margin)
+sum(margin)
