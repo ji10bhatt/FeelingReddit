@@ -5,11 +5,11 @@ library(rplos)
 library(SnowballC)
 library(RedditExtractoR)
 
-prepCorpus <- function(comsite) {
-   content <- reddit_content(comsite)
+prepCorpus <- function(URL) {
+   content <- reddit_content(URL)
    comments <- content$comment
-   corpus <- Corpus(VectorSource(comments)) 
-   
+   corpus <- Corpus(VectorSource(comments))
+
    corpus <- tm_map(corpus, content_transformer(tolower), lazy=T) #lower case conversion
    corpus <- tm_map(corpus, removePunctuation, lazy=T)
    corpus <- tm_map(corpus, removeNumbers, lazy=T) #remove numbers
